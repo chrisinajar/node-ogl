@@ -1,6 +1,8 @@
 #include <node.h>
 #include "common.h"
 
+#include <iostream>
+
 // Includes
 #include "gl.h"
 #include <GL/gl.h>
@@ -4777,15 +4779,15 @@ namespace node {
    *
    * @param GLsizei n
    * @param GLuint *textures
-   * @return void
+   * @return Number
    */
   Handle<Value> gl_glGenTextures(const Arguments& args) {
     HandleScope scope;
     GLsizei _n = (GLsizei)args[0]->Int32Value();
-    GLuint _textures = (GLuint)args[1]->Uint32Value();
+    GLuint _textures = -1;
     glGenTextures(_n, &_textures);
-
-    args[1] = Number::New(_textures);
+    
+    return scope.Close(Number::New(_textures));
   }
 
 
