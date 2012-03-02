@@ -1,8 +1,6 @@
 #include <node.h>
 #include "common.h"
 
-#include <iostream>
-
 // Includes
 #include "gl.h"
 #include <GL/gl.h>
