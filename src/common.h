@@ -24,7 +24,6 @@
 #include "gl.h"
 #include "glfw.h"
 #include "glu.h"
-#include "glut.h"
 
 namespace node {
   class glConstants {
