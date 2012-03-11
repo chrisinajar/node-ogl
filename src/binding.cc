@@ -12,5 +12,6 @@ init (Handle<Object> target)
   glfw::Initialize(target);
   gl::Initialize(target);
   glu::Initialize(target);
+  glut::Initialize(target);
 }
 

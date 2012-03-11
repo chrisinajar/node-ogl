@@ -50,6 +50,7 @@ def build(bld):
   node_ogl.name = "node-ogl"
   node_ogl.target = "node-ogl"
   node_ogl.uselib = ["GL", "GLU", "GLFW", "XRANDR"]
+  bld.env.append_value('LINKFLAGS', '-lglut'.split())
   bld.add_post_fun(copynode)
 
 def copynode(ctx):

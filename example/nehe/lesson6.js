@@ -8,8 +8,10 @@ var gl     = require(__dirname + "/../../lib/OpenGL"),
     yrot   = 0,
     zrot   = 0,
     file   = __dirname + "/data/NeHe.bmp",
+    file2  = __dirname + "/data/Crate.bmp",
     textureBuffer,
-    image = { width: 256, height: 256, size: 256*256*3, texture: -1};
+    image = { width: 256, height: 256, size: 256*256*3, texture: -1},
+    image2 = { width: 256, height: 256, size: 256*256*3, texture: -1};
 
 gl.OpenWindow(width,height,0,0,0,0,0,0,0);
 
@@ -23,7 +25,7 @@ for (var i=0;i<image.buffer.length;i+=3) {
   image.buffer[i+2] = temp;
 }
 
-gl.glGenTextures(1, image.texture);
+image.texture = gl.glGenTextures(1, image.texture);
 gl.glBindTexture(gl.GL_TEXTURE_2D, image.texture);
 
 gl.glTexParameteri(gl.GL_TEXTURE_2D,gl.GL_TEXTURE_MIN_FILTER,gl.GL_LINEAR);
@@ -37,6 +39,32 @@ gl.glTexImage2D(gl.GL_TEXTURE_2D,         // 2d texture
                          gl.GL_RGB,             // rgb color data
                          gl.GL_UNSIGNED_BYTE,   // unsigned byte data
                          image.buffer);         // the actual data
+
+
+textureBuffer = fs.readFileSync(file2);
+image2.buffer = textureBuffer.slice(54, textureBuffer.length);
+
+// reverse all of the colors. (bgr -> rgb)
+for (var i=0;i<image2.buffer.length;i+=3) {
+  var temp = image2.buffer[i];
+  image2.buffer[i] = image2.buffer[i+2];
+  image2.buffer[i+2] = temp;
+}
+
+image2.texture = gl.glGenTextures(1, image2.texture);
+gl.glBindTexture(gl.GL_TEXTURE_2D, image2.texture);
+
+gl.glTexParameteri(gl.GL_TEXTURE_2D,gl.GL_TEXTURE_MIN_FILTER,gl.GL_LINEAR);
+
+gl.glTexImage2D(gl.GL_TEXTURE_2D,         // 2d texture
+                         0,                     // level of detail 0 (normal)
+                         3,                     // 3 components (red green blue)
+                         image2.width,           // x size from image
+                         image2.height,          // y size from image
+                         0,                     // border 0 (normal)
+                         gl.GL_RGB,             // rgb color data
+                         gl.GL_UNSIGNED_BYTE,   // unsigned byte data
+                         image2.buffer);         // the actual data
 
 gl.glShadeModel(gl.GL_SMOOTH);
 gl.glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -77,6 +105,10 @@ setInterval(function() {
     gl.glTexCoord2f(0.0, 1.0); gl.glVertex3f( 1.0,  1.0, -1.0);	// Top Left Of The Texture and Quad
     gl.glTexCoord2f(0.0, 0.0); gl.glVertex3f( 1.0, -1.0, -1.0);	// Bottom Left Of The Texture and Quad
 
+    //gl.glEnd();                                    // done with the polygon.
+
+  gl.glBindTexture(gl.GL_TEXTURE_2D, image2.texture);   // choose the texture to use.
+    //gl.glBegin(gl.GL_QUADS);		                // begin drawing a cube
     // Top Face
     gl.glTexCoord2f(0.0, 1.0); gl.glVertex3f(-1.0,  1.0, -1.0);	// Top Left Of The Texture and Quad
     gl.glTexCoord2f(0.0, 0.0); gl.glVertex3f(-1.0,  1.0,  1.0);	// Bottom Left Of The Texture and Quad
